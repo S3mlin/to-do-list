@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Personal to do list!</title>
+    </head>
+    <body>
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.task.label }}<br>
+                {{ form.task(size=32) }}
+                {% for error in form.task.errors %}
+                <span style="color:crimson;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit() }}</p>
+        </form>
+    <hr>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% if check %}
+    <a href="{{ check }}">See the to do list!</a>
+    {% endif %}
+    </body>
+</html>

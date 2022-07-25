@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Personal to do list!</title>
+    </head>
+    <body>
+        <h1>To do list</h1>
+        <ul>
+            {% for todo in pagination.items %}
+            <li>{{ todo.task }}</li>
+            {% endfor %}
+            {% if prev_url %}
+            <a href="{{ prev_url }}">Newer Tasks</a>
+            {% endif %}
+            {% if next_url %}
+            <a href="{{ next_url }}">Older Tasks</a>
+            {% endif %}
+        </ul>
+        <a href="{{ url_for('index') }}">Add more tasks to your to do list!</a>
+    </body>
+</html>
