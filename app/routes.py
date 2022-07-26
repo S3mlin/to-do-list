@@ -8,17 +8,18 @@ from sqlalchemy_utils.functions import database_exists
 def index():
     form = TodoForm()
     if request.method == 'GET':
-        return render_template('index.html',form=form)
+        if database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
+            flash('raid')
+            if ToDo.query.filter_by().count() > 0:
+                check = 1
+                return render_template('index.html', check=check, form=form)
+        else:
+            return render_template('index.html',form=form)
     if form.validate_on_submit():
         to_do_task = ToDo(task=form.task.data)
         db.session.add(to_do_task)
         db.session.commit()
         return redirect(url_for('todolist'))
-    if database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
-        flash('raid')
-        if ToDo.query.filter_by().count() > 0:
-            check = 1
-            return render_template('index.html', check=check, form=form)
     return render_template('index.html',form=form)
 
 
