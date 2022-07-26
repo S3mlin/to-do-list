@@ -25,8 +25,8 @@
     </ul>
     {% endif %}
     {% endwith %}
-    {% if check %}
-    <a href="{{ check }}">See the to do list!</a>
+    {% if check is defined %}
+    <a href="{{ url_for('todolist') }}">See the to do list!</a>
     {% endif %}
     </body>
 </html>

@@ -15,17 +15,17 @@ def index():
         db.session.commit()
         return redirect(url_for('todolist'))
     if database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
+        flash('raid')
         if ToDo.query.filter_by().count() > 0:
-            check = url_for('todolist')
-            flash('ludo')
-            return render_template('index.html', check=check)
+            check = 1
+            return render_template('index.html', check=check, form=form)
     return render_template('index.html',form=form)
 
 
 @app.route('/to-do-list', methods=['GET', 'POST'])
 def todolist():
     page = request.args.get('page', 1, type=int)
-    pagination = ToDo.query.filter_by().paginate(
+    pagination = ToDo.query.order_by(ToDo.timestamp.desc()).paginate(
         page, app.config['LIST_ITEMS_PER_PAGE'], False)
     next_url = url_for('todolist', page=pagination.next_num) \
         if pagination.has_next else None
