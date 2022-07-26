@@ -9,7 +9,6 @@ def index():
     form = TodoForm()
     if request.method == 'GET':
         if database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
-            flash('raid')
             if ToDo.query.filter_by().count() > 0:
                 check = 1
                 return render_template('index.html', check=check, form=form)
@@ -34,3 +33,14 @@ def todolist():
         if pagination.has_prev else None
     return render_template('todolist.html', pagination=pagination, next_url=next_url,
                             prev_url=prev_url)
+
+
+@app.route('/delete_task', methods=['GET','POST'])
+def delete_task():
+    received_data = request.values
+    task_id = received_data.get('param')
+    print(task_id)
+    task = ToDo.query.filter_by(task_id)
+    db.session.delete(task)
+    db.session.commit()
+    return redirect(url_for('todolist'))
