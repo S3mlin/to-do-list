@@ -35,12 +35,24 @@ def todolist():
                             prev_url=prev_url)
 
 
-@app.route('/delete_task', methods=['GET','POST'])
-def delete_task():
-    received_data = request.values
-    task_id = received_data.get('param')
-    print(task_id)
-    task = ToDo.query.filter_by(task_id)
+@app.route('/delete_task/<task_id>')
+def delete_task(task_id):
+    task = ToDo.query.get(task_id)
+    if not task:
+        return redirect(url_for('todolist'))
     db.session.delete(task)
     db.session.commit()
     return redirect(url_for('todolist'))
+
+
+@app.route('/edit_task/<task_id>', methods=['GET', 'POST'])
+def edit_task(task_id):
+    form = TodoForm()
+    if request.method == 'GET':
+        return render_template('edit_task.html', form=form)
+    task = ToDo.query.get(task_id)
+    if form.validate_on_submit():
+        task.task = form.task.data
+        db.session.commit()
+        return redirect(url_for('todolist'))
+    return render_template('edit_task.html', form=form)

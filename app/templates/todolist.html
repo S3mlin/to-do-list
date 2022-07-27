@@ -7,7 +7,9 @@
         <h1>To do list</h1>
         <ul>
             {% for todo in pagination.items %}
-            <li>{{ todo.task }} <button id="{{ todo.id }}" onclick="btnOnClick(id)">Delete task</button></li>
+            <li>{{ todo.task }} <button><a href="/delete_task/{{ todo.id }}">Delete task</a></button>
+                <button><a href="/edit_task/{{ todo.id }}">Edit task</a></button>
+            </li>
             {% endfor %}
             {% if prev_url %}
             <a href="{{ prev_url }}">Newer Tasks</a>
@@ -17,14 +19,5 @@
             {% endif %}
         </ul>
         <a href="{{ url_for('index') }}">Add more tasks to your to do list!</a>
-        <script>
-            function btnOnClick(id){
-                $.ajax({
-                    type: 'POST',
-                    url: '/delete_task',
-                    data: {'param': id}
-                });
-            }
-        </script>
     </body>
 </html>
