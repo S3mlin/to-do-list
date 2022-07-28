@@ -25,8 +25,10 @@
     </ul>
     {% endif %}
     {% endwith %}
-    {% if check is defined %}
+    {% if todo_exists %}
     <a href="{{ url_for('todolist') }}">See the to do list!</a>
+    {% else %}
+    <p>Tasks must be added for the list to be accessible</p>
     {% endif %}
     </body>
 </html>
