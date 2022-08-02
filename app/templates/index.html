@@ -26,7 +26,7 @@
     {% endif %}
     {% endwith %}
     {% if todo_exists %}
-    <a href="{{ url_for('todolist') }}">See the to do list!</a>
+    <a href="{{ url_for('bp.todolist') }}">See the to do list!</a>
     {% else %}
     <p>Tasks must be added for the list to be accessible</p>
     {% endif %}

@@ -1,5 +1,9 @@
-from app import app, db
+from app import create_app
 from app.models import ToDo
+
+app = create_app("Config")
+
+from app.extensions import db
 
 
 @app.shell_context_processor

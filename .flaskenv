@@ -1,1 +1,1 @@
-FLASK_APP=to_do_list.py
+FLASK_APP="app:create_app"

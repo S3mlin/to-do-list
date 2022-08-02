@@ -1,19 +1,38 @@
-from flask import Flask
+from flask import Flask, current_app
 from app.config import Config
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate, migrate as migrate_function, upgrade
 from sqlalchemy_utils.functions import database_exists
+from flask_migrate import Migrate, upgrade, migrate as migrate_function
+from app.extensions import db
 
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+migrate = Migrate()
+
+def create_app(config_class='Config'):
+    app = Flask(__name__)
+    app.config.from_object(f"app.config.{config_class}")
+
+    
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    from app.routes import bp
+
+    app.register_blueprint(bp)
+
+
+    return app
+
+app = create_app('Config')
+
+
 if not database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
     print("Database doesn't exist, creating a new one...")
-    db.create_all()
     with app.app_context():
         upgrade()
         migrate_function()
+        
+        
+        
+                
 
-from app import routes, models
+from app import models
